@@ -6,11 +6,8 @@
 #import module to open and read CSV files.
 import csv
 
-#cost variables for different types of prints
-oneSidedBWCost = 0.15
-oneSidedColorCost = 0.25
-twoSidedBWCost = 0.10
-twoSidedColorCost = 0.20
+#create dictionary for print costs. Can be expanded to include other cost types.
+a4PrintCosts = {'oneSidedBWCost': 0.15, 'oneSidedColorCost': 0.25, 'twoSidedBWCost': 0.10, 'twoSidedColorCost': 0.20}
 
 csvHasHeader = True #can switch this value if CSV File does not contain header
 totalPrintCost = 0.0 #variable to hold total cost for all print job.
@@ -34,14 +31,12 @@ if __name__ == "__main__":
                 isTwoSided = row[2].replace(' ', '')
 
                 if isTwoSided == 'true':
-                    printJobCost = (bwPages * twoSidedBWCost) + (colorPages * twoSidedColorCost)
+                    printJobCost = (bwPages * a4PrintCosts.get('twoSidedBWCost')) + (colorPages * a4PrintCosts.get('twoSidedColorCost'))
                     print('Cost for this print job is: $' + "{:.2f}".format(printJobCost))
                     totalPrintCost += printJobCost
                 elif isTwoSided == 'false':
-                    printJobCost = (bwPages * oneSidedBWCost) + (colorPages * oneSidedColorCost)
+                    printJobCost = (bwPages * a4PrintCosts.get('oneSidedBWCost')) + (colorPages * a4PrintCosts.get('oneSidedColorCost'))
                     print('Cost for this print job is: $' + "{:.2f}".format(printJobCost))
                     totalPrintCost += printJobCost
 
         print('Total Printing Cost is: $' + "{:.2f}".format(totalPrintCost))
-
-        #"{:.9f}".format(numvar)
