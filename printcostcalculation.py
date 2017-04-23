@@ -15,6 +15,19 @@ totalPrintCost = 0.0 #variable to hold total cost for all print job.
 def csv_reader (file):
     return csv.reader(file)
 
+def calculatePrintJobCost(printData, costDict):
+    bwPages = int(printData[0]) - int(printData[1])
+    colorPages = int(printData[1])
+    isTwoSided = printData[2].replace(' ', '')
+
+    if isTwoSided == 'true':
+        printJobCost = (bwPages * costDict.get('twoSidedBWCost')) + (colorPages * costDict.get('twoSidedColorCost'))
+        return "{:.2f}".format(printJobCost)
+    elif isTwoSided == 'false':
+        printJobCost = (bwPages * costDict.get('oneSidedBWCost')) + (colorPages * costDict.get('oneSidedColorCost'))
+        return "{:.2f}".format(printJobCost)
+
+
 if __name__ == "__main__":
 
     csvFilePath = "sample.csv" #assumes that csv file is in same folder as python file
@@ -26,17 +39,8 @@ if __name__ == "__main__":
             if csvHasHeader:
                 csvHasHeader = False
             else:
-                bwPages = int(row[0]) - int(row[1])
-                colorPages = int(row[1])
-                isTwoSided = row[2].replace(' ', '')
-
-                if isTwoSided == 'true':
-                    printJobCost = (bwPages * a4PrintCosts.get('twoSidedBWCost')) + (colorPages * a4PrintCosts.get('twoSidedColorCost'))
-                    print('Cost for this print job is: $' + "{:.2f}".format(printJobCost))
-                    totalPrintCost += printJobCost
-                elif isTwoSided == 'false':
-                    printJobCost = (bwPages * a4PrintCosts.get('oneSidedBWCost')) + (colorPages * a4PrintCosts.get('oneSidedColorCost'))
-                    print('Cost for this print job is: $' + "{:.2f}".format(printJobCost))
-                    totalPrintCost += printJobCost
+                currentJobCost = calculatePrintJobCost(row, a4PrintCosts)
+                print('Print Cost for current job is: $' + currentJobCost)
+                totalPrintCost += float(currentJobCost)
 
         print('Total Printing Cost is: $' + "{:.2f}".format(totalPrintCost))
