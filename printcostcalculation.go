@@ -25,16 +25,16 @@ func check(e error) {
  */
 func calculatePrintJobCost(costDict map[string]float64, printData []string) float64 {
 	var currentPrintJobCost float64
-	totalPages, err := strconv.ParseFloat(printData[0], 32)
+	totalPages, err := strconv.ParseFloat(strings.Replace(printData[0], " ", "", -1), 32)
 	if err != nil {
 		log.Fatal(err)
 	}
-	colorPages, err := strconv.ParseFloat(printData[1], 32)
+	colorPages, err := strconv.ParseFloat(strings.Replace(printData[1], " ", "", -1), 32)
 	if err != nil {
 		log.Fatal(err)
 	}
 	bwPages := (totalPages - colorPages)
-	isTwoSided, err := strconv.ParseBool(printData[2])
+	isTwoSided, err := strconv.ParseBool(strings.Replace(printData[2], " ", "", -1))
 
 	if isTwoSided == true {
 		currentPrintJobCost := (bwPages * costDict["twoSidedBWCost"])
