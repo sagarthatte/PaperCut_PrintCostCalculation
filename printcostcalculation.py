@@ -8,13 +8,14 @@ import csv
 
 #create dictionary for print costs. Can be expanded to include other cost types.
 a4PrintCosts = {'oneSidedBWCost': 0.15, 'oneSidedColorCost': 0.25, 'twoSidedBWCost': 0.10, 'twoSidedColorCost': 0.20}
+currJobNum = 1
+csvHasHeader = True #variable indicating that CSV file has a header. Can be switched for csv files without headers.
+totalPrintCost = 0.0 #variable to hold total cost for printing
 
-csvHasHeader = True #can switch this value if CSV File does not contain header
-totalPrintCost = 0.0 #variable to hold total cost for all print job.
-# function to read file object and return raw data
-def csv_reader (file):
+def csv_reader (file):	# function to read file object and return raw data
     return csv.reader(file)
 
+#function for calculation of printing costs.
 def calculatePrintJobCost(printData, costDict):
     bwPages = int(printData[0]) - int(printData[1])
     colorPages = int(printData[1])
@@ -27,7 +28,7 @@ def calculatePrintJobCost(printData, costDict):
         printJobCost = (bwPages * costDict.get('oneSidedBWCost')) + (colorPages * costDict.get('oneSidedColorCost'))
         return "{:.2f}".format(printJobCost)
 
-
+#main
 if __name__ == "__main__":
 
     csvFilePath = "sample.csv" #assumes that csv file is in same folder as python file
@@ -35,12 +36,13 @@ if __name__ == "__main__":
     with open(csvFilePath, "r") as fileObject:
         reader = csv_reader(fileObject)
 
-        for row in reader:
-            if csvHasHeader:
+        for row in reader:	#looping through csv data for individual records
+            if csvHasHeader:	#skips first line for csv files with headers
                 csvHasHeader = False
             else:
                 currentJobCost = calculatePrintJobCost(row, a4PrintCosts)
-                print('Print Cost for current job is: $' + currentJobCost)
-                totalPrintCost += float(currentJobCost)
+                print('Cost for print job ' + str(currJobNum) + ' is: $' + currentJobCost)
+                currJobNum += 1
+                totalPrintCost += float(currentJobCost)	#Outputs individual printing costs to console
 
-        print('Total Printing Cost is: $' + "{:.2f}".format(totalPrintCost))
+        print('Total Printing Cost is: $' + "{:.2f}".format(totalPrintCost))	#Outputs total printing cost to console

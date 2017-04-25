@@ -57,6 +57,7 @@ func main() {
 	a4PrintCosts["twoSidedColorCost"] = 0.20
 
 	csvHasHeader := true                      //this variable indicates that csvFile has a header
+	currJobNum := 1                           //intialize current job number
 	var totalPrintJobCost float64             //initializing total printing cost
 	dat, err := ioutil.ReadFile("sample.csv") //reading csv file
 	check(err)                                //checking for errors
@@ -77,9 +78,10 @@ func main() {
 			csvHasHeader = false
 		} else { //calls cost calculation function for each record.
 			currentPrintJobCost := calculatePrintJobCost(a4PrintCosts, record)
-			fmt.Printf("Cost for current print job is: $%.2f \n", currentPrintJobCost)
+			fmt.Printf("Cost for print job %d is: $%.2f \n", currJobNum, currentPrintJobCost)
+			currJobNum += 1
 			totalPrintJobCost += currentPrintJobCost //adding costs to the total cost
 		}
 	}
-	fmt.Printf("Total Print Cost is: $%.2f", totalPrintJobCost) //outputting total cost to console/terminal
+	fmt.Printf("Total Printing Cost is: $%.2f", totalPrintJobCost) //outputting total cost to console/terminal
 }
