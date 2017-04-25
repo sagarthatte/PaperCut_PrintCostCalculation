@@ -22,7 +22,7 @@ const (
 	//csvHasHeader      bool    = true
 )
 
-//error checking function?
+//error checking function
 func check(e error) {
 	if e != nil {
 		panic(e)
@@ -30,7 +30,7 @@ func check(e error) {
 }
 
 func round(num float64) int {
-	return int(num + math.Copysign(0.5, num))
+	return int(num + math.Copysign(0.55, num))
 }
 
 func toFixed(num float64, precision int) float64 {
@@ -73,15 +73,15 @@ func main() {
 			if isTwoSided == true {
 				currentPrintJobCost := (bwPages * twoSidedBWCost)
 				currentPrintJobCost += (colorPages * twoSidedColorCost)
-				fmt.Println("Cost for current print job is: $", toFixed(currentPrintJobCost, 4))
+				fmt.Printf("Cost for current print job is: $%.2f \n", currentPrintJobCost)
 				totalPrintJobCost += currentPrintJobCost
 			} else if isTwoSided == false {
 				currentPrintJobCost := (bwPages * oneSidedBWCost)
 				currentPrintJobCost += (colorPages * oneSidedColorCost)
-				fmt.Println("Cost for current print job is: $", toFixed(currentPrintJobCost, 4))
+				fmt.Printf("Cost for current print job is: $%.2f \n", currentPrintJobCost)
 				totalPrintJobCost += currentPrintJobCost
 			}
 		}
 	}
-	fmt.Println("Total Print Cost is: $", toFixed(totalPrintJobCost, 2))
+	fmt.Printf("Total Print Cost is: $%.2f", totalPrintJobCost)
 }
